@@ -3,14 +3,20 @@ output "vpc_id" {
   value       = aws_vpc.main_vpc.id
 }
 
-output "private_subnet_ids" {
-  description = "Private subnet IDs — EKS worker nodes live here"
-  value       = aws_subnet.private_subnet_one.id
+output "public_subnet_ids" {
+  description = "List of public subnet IDs"
+  value       = [
+    aws_subnet.public_subnet_one.id,
+    aws_subnet.public_subnet_two.id
+  ]
 }
 
-output "public_subnet_ids" {
-  description = "Public subnet IDs — ALBs and NAT gateway live here"
-  value       = aws_subnet.public_subnet_one.id
+output "private_subnet_ids" {
+  description = "List of private subnet IDs"
+  value       = [
+    aws_subnet.private_subnet_one.id,
+    aws_subnet.private_subnet_two.id
+  ]
 }
 
 output "vpc_cidr_block" {

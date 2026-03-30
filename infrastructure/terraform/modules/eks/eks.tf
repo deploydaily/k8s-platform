@@ -2,9 +2,9 @@
 # EKS Cluster
 # -----------------------------------------------
 resource "aws_eks_cluster" "eks_cluster" {
-  name = var.eks_cluster_name
-  version  = var.kubernetes_version
-  role_arn = aws_iam_role.eks_cluster_role.arn
+  name      = var.eks_cluster_name
+  version   = var.kubernetes_version
+  role_arn  = aws_iam_role.eks_cluster_role.arn
 
   access_config {
     authentication_mode = "API_AND_CONFIG_MAP"

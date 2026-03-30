@@ -40,7 +40,7 @@ variable "eks_node_min" {
 variable "eks_node_max" {
   description = "Maximum number of worker nodes"
   type        = number
-  default     = 4
+  default     = 3
 }
 
 variable "environment" {
