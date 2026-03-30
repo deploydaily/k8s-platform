@@ -20,6 +20,8 @@ resource "aws_eks_cluster" "eks_cluster" {
   depends_on = [
     aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy,
   ]
+
+  tags = local.common_tags
 }
 # -----------------------------------------------
 # Cluster IAM Role
@@ -41,6 +43,8 @@ resource "aws_iam_role" "eks_cluster_role" {
       },
     ]
   })
+
+  tags = local.common_tags
 }
 # -----------------------------------------------
 # Attach EKSClusterPolicy to EKS cluster role
@@ -63,6 +67,10 @@ resource "aws_security_group" "eks_cluster_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = merge(local.common_tags, {
+    Name = "${var.eks_cluster_name}-cluster-sg"
+  })
 }
 # -----------------------------------------------
 # Allow nodes to reach control plane on 443

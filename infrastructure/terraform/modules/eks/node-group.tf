@@ -7,13 +7,18 @@ resource "aws_eks_node_group" "eks_node_group" {
   instance_types    = [var.eks_node_instance_type]
 
   scaling_config {
-    desired_size = 1
-    max_size     = 2
-    min_size     = 1
+    desired_size = var.eks_node_desired
+    max_size     = var.eks_node_max
+    min_size     = var.eks_node_min
   }
 
   update_config {
     max_unavailable = 1
+  }
+
+  launch_template {
+    id      = aws_launch_template.eks_nodes_lt.id
+    version = aws_launch_template.eks_nodes_lt.latest_version
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
@@ -23,6 +28,8 @@ resource "aws_eks_node_group" "eks_node_group" {
     aws_iam_role_policy_attachment.eks_nodes_worker_policy,
     aws_iam_role_policy_attachment.eks_nodes_ecr_policy,
   ]
+
+  tags = local.common_tags
 }
 # -----------------------------------------------
 # Launch Template
@@ -60,6 +67,8 @@ resource "aws_iam_role" "eks_nodes_role" {
       Action = "sts:AssumeRole"
     }]
   })
+
+  tags = local.common_tags
 }
 resource "aws_iam_role_policy_attachment" "eks_nodes_worker_policy" {
   role       = aws_iam_role.eks_nodes_role.name
@@ -106,4 +115,8 @@ resource "aws_security_group" "eks_nodes_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = merge(local.common_tags, {
+    Name = "${var.eks_cluster_name}-nodes-sg"
+  })
 }

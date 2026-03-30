@@ -25,19 +25,19 @@ variable "eks_node_instance_type" {
   default     = "t3.medium"
 }
 
-variable "node_desired" {
+variable "eks_node_desired" {
   description = "Desired number of worker nodes"
   type        = number
   default     = 2
 }
 
-variable "node_min" {
+variable "eks_node_min" {
   description = "Minimum number of worker nodes"
   type        = number
   default     = 1
 }
 
-variable "node_max" {
+variable "eks_node_max" {
   description = "Maximum number of worker nodes"
   type        = number
   default     = 4
@@ -47,4 +47,9 @@ variable "environment" {
   description = "Environment name (dev, staging, prod)"
   type        = string
   default     = "dev"
+}
+
+variable "region" {
+  type    = string
+  default = "us-east-1"
 }
