@@ -22,6 +22,18 @@ resource "aws_subnet" "public_subnet_one" {
 }
 
 # ------------------------------------------------------
+# Public Subnet 2
+# ------------------------------------------------------
+resource "aws_subnet" "public_subnet_two" {
+  vpc_id                  = aws_vpc.main_vpc.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = data.aws_availability_zones.available.names[1]
+  map_public_ip_on_launch = true
+
+  tags = { Name = "${var.project_name}-PublicSubnetTwo" }
+}
+
+# ------------------------------------------------------
 # Internet Gateway + Public Route Table
 # ------------------------------------------------------
 resource "aws_internet_gateway" "main_igw" {
@@ -41,8 +53,13 @@ resource "aws_route_table" "public_rt" {
   tags = { Name = "${var.project_name}-PublicRouteTable" }
 }
 
-resource "aws_route_table_association" "public_rt_attach" {
+resource "aws_route_table_association" "public1_rt_attach" {
   subnet_id      = aws_subnet.public_subnet_one.id
+  route_table_id = aws_route_table.public_rt.id
+}
+
+resource "aws_route_table_association" "public2_rt_attach" {
+  subnet_id      = aws_subnet.public_subnet_two.id
   route_table_id = aws_route_table.public_rt.id
 }
 
@@ -53,9 +70,19 @@ resource "aws_subnet" "private_subnet_one" {
   vpc_id                  = aws_vpc.main_vpc.id
   cidr_block              = "10.0.11.0/24"
   availability_zone       = data.aws_availability_zones.available.names[0]
-  map_public_ip_on_launch = true
 
   tags = { Name = "${var.project_name}-PrivateSubnetOne" }
+}
+
+# ------------------------------------------------------
+# Private Subnet 2
+# ------------------------------------------------------
+resource "aws_subnet" "private_subnet_two" {
+  vpc_id                  = aws_vpc.main_vpc.id
+  cidr_block              = "10.0.12.0/24"
+  availability_zone       = data.aws_availability_zones.available.names[1]
+
+  tags = { Name = "${var.project_name}-PrivateSubnetTwo" }
 }
 
 # ------------------------------------------------------
@@ -67,7 +94,12 @@ resource "aws_route_table" "private_rt" {
   tags = { Name = "${var.project_name}-PrivateRouteTable" }
 }
 
-resource "aws_route_table_association" "private_rt_attach" {
+resource "aws_route_table_association" "private1_rt_attach" {
   subnet_id      = aws_subnet.private_subnet_one.id
+  route_table_id = aws_route_table.private_rt.id
+}
+
+resource "aws_route_table_association" "private2_rt_attach" {
+  subnet_id      = aws_subnet.private_subnet_two.id
   route_table_id = aws_route_table.private_rt.id
 }

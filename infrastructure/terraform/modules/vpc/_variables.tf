@@ -3,3 +3,8 @@ variable "project_name" {
   type          = string
   default       = "nt-infra"
 }
+
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
