@@ -1,0 +1,49 @@
+# Terraform state — never commit these
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Terraform lock file for providers — commit this one (remove if you see it here)
+# .terraform.lock.hcl  ← keep this, it pins provider versions
+
+# Local terraform working directory
+**/.terraform/*
+
+# Plan files — contain sensitive data
+*.tfplan
+*.tfplan.*
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Variable files that may contain secrets
+*.tfvars.json
+# Keep terraform.tfvars in version control ONLY if it has no secrets
+# If it has secrets, uncomment the line below:
+# terraform.tfvars
+
+# Override files (local developer overrides)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# AWS credentials — never commit
+.aws/
+credentials
+*.pem
+*.key
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Helm
+charts/*.tgz
